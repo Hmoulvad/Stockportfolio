@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using stockportfolio.Models;
 
 namespace stockportfolio.Persistence
 {
@@ -7,7 +8,8 @@ namespace stockportfolio.Persistence
      public StockportfolioDbContext(DbContextOptions<StockportfolioDbContext> options)
      : base(options)
      {
-         //Systenm  
-     }   
+     }
+
+     public DbSet<User> Users { get; set; }
     }
 }
