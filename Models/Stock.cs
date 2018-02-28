@@ -7,5 +7,6 @@ namespace stockportfolio.Models
         public string Currency {get; set;}
         public string Symbol {get; set;}
         public StockExchange StockExchange { get; set; }
+        public int StockExchangeID { get; set; }
     }
-}
+}   
