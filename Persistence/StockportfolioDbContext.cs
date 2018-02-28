@@ -11,5 +11,7 @@ namespace stockportfolio.Persistence
      }
 
      public DbSet<User> Users { get; set; }
+     public DbSet<StockExchange> StockExchanges { get; set; }
+     public DbSet<Stock> Stock { get; set; }
     }
 }

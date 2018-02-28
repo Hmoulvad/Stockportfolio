@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace stockportfolio.Migrations
 {
-    public partial class IntialModel : Migration
+    public partial class InitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,7 +24,7 @@ namespace stockportfolio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -35,7 +35,7 @@ namespace stockportfolio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,14 +45,9 @@ namespace stockportfolio.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Currency = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     StockExchangeID = table.Column<int>(nullable: false),
-                    Symbol = table.Column<string>(nullable: true),
-                    Amount = table.Column<int>(nullable: true),
-                    PurchaseDate = table.Column<DateTime>(nullable: true),
-                    PurchasePrice = table.Column<double>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
+                    Symbol = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,10 +58,33 @@ namespace stockportfolio.Migrations
                         principalTable: "StockExchange",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserStock",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Amount = table.Column<int>(nullable: false),
+                    PurchaseDate = table.Column<DateTime>(nullable: false),
+                    PurchasePrice = table.Column<double>(nullable: false),
+                    StockId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserStock", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stock_Users_UserId",
+                        name: "FK_UserStock_Stock_StockId",
+                        column: x => x.StockId,
+                        principalTable: "Stock",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserStock_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -77,21 +95,29 @@ namespace stockportfolio.Migrations
                 column: "StockExchangeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stock_UserId",
-                table: "Stock",
+                name: "IX_UserStock_StockId",
+                table: "UserStock",
+                column: "StockId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserStock_UserId",
+                table: "UserStock",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "UserStock");
+
+            migrationBuilder.DropTable(
                 name: "Stock");
 
             migrationBuilder.DropTable(
-                name: "StockExchange");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "StockExchange");
         }
     }
 }

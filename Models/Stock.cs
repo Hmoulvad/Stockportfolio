@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace stockportfolio.Models
 {
+    [Table("Stock")]
     public class Stock
     {
 

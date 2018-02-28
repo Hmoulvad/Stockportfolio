@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using stockportfolio.Persistence;
 using System;
 
@@ -28,9 +27,6 @@ namespace stockportfolio.Migrations
 
                     b.Property<string>("Currency");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<string>("Name");
 
                     b.Property<int>("StockExchangeID");
@@ -42,8 +38,6 @@ namespace stockportfolio.Migrations
                     b.HasIndex("StockExchangeID");
 
                     b.ToTable("Stock");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Stock");
                 });
 
             modelBuilder.Entity("stockportfolio.Models.StockExchange", b =>
@@ -76,12 +70,13 @@ namespace stockportfolio.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("stockportfolio.Models.UserStock", b =>
                 {
-                    b.HasBaseType("stockportfolio.Models.Stock");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("Amount");
 
@@ -89,13 +84,17 @@ namespace stockportfolio.Migrations
 
                     b.Property<double>("PurchasePrice");
 
+                    b.Property<int>("StockId");
+
                     b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StockId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("UserStock");
-
-                    b.HasDiscriminator().HasValue("UserStock");
                 });
 
             modelBuilder.Entity("stockportfolio.Models.Stock", b =>
@@ -108,6 +107,11 @@ namespace stockportfolio.Migrations
 
             modelBuilder.Entity("stockportfolio.Models.UserStock", b =>
                 {
+                    b.HasOne("stockportfolio.Models.Stock", "Stock")
+                        .WithMany()
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("stockportfolio.Models.User", "User")
                         .WithMany("UserStocks")
                         .HasForeignKey("UserId")
