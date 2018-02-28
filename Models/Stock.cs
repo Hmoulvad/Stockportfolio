@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace stockportfolio.Models
 {
     public class Stock
     {
+
         public int Id {get; set;}
         public string Name {get; set;}
         public string Currency {get; set;}

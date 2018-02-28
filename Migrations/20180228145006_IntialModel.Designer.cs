@@ -12,7 +12,7 @@ using System;
 namespace stockportfolio.Migrations
 {
     [DbContext(typeof(StockportfolioDbContext))]
-    [Migration("20180228143353_IntialModel")]
+    [Migration("20180228145006_IntialModel")]
     partial class IntialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
