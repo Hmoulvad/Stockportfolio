@@ -7,5 +7,6 @@ namespace stockportfolio.Models
         public int Amount {get; set;}
         public DateTime PurchaseDate {get; set;}
         public double PurchasePrice {get; set;}
+
     }
 }
