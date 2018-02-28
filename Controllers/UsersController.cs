@@ -9,11 +9,17 @@ namespace Stockportfolio.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly StockportfolioDbContext context;
         public UsersController(StockportfolioDbContext context) 
         {
             this.context = context;
         }
+
+        [HttpGet("/api/users")]
+        public async Task<IEnumerable<User>> getUsers() {
+            return await context.Users.Include(u => u.UserStocks).ToListAsync();
+        }
+        private readonly StockportfolioDbContext context;
+        
 
     }
 }
