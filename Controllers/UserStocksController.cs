@@ -9,23 +9,22 @@ using stockportfolio.Persistence;
 
 namespace Stockportfolio.Controllers
 {
-    public class UsersController : Controller
+    public class UsersStocksController : Controller
     {
         private readonly StockportfolioDbContext context;
         private readonly IMapper mapper;
-        public UsersController(StockportfolioDbContext context, IMapper mapper)
+        public UsersStocksController(StockportfolioDbContext context, IMapper mapper)
         {
             this.mapper = mapper;
             this.context = context;
         }
 
-        [HttpGet("/api/users")]
-        public async Task<IEnumerable<UserResource>> GetUsers()
+        [HttpGet("/api/userstocks")]
+        public async Task<IEnumerable<UserStockResource>> GetUsers()
         {
-            var users = await context.Users.Include(u => u.UserStocks).ToListAsync();
+            var userstocks = await context.UserStocks.Include(s => s.Stock).ToListAsync();
 
-            return mapper.Map<List<User>, List<UserResource>>(users);
+            return mapper.Map<List<UserStock>, List<UserStockResource>>(userstocks);
         }
-
     }
 }
